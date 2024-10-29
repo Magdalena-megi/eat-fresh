@@ -8,12 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
-interface Recipe {
-  idMeal: string;
-  strMeal: string;
-  strMealThumb: string;
-}
-
 export default function EatFreshRecipeFinder() {
   const [query, setQuery] = useState("");
   const [recipes, setRecipes] = useState<Recipe[]>([]);
