@@ -14,20 +14,33 @@ export default function EatFreshRecipeFinder() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSearchRecipe = async () => {
+  const handleSearch = async () => {
     if (!query.trim()) return;
     setLoading(true);
     setError("");
     setRecipes([]);
 
     try {
-      const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`
-      );
-      const data = await response.json();
+      const [recipeResponse, ingredientResponse] = await Promise.all([
+        fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`),
+        fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${query}`),
+      ]);
 
-      if (data.meals) {
-        setRecipes(data.meals);
+      const [recipeData, ingredientData] = await Promise.all([
+        recipeResponse.json(),
+        ingredientResponse.json(),
+      ]);
+
+      const combinedMeals = [
+        ...(recipeData.meals || []),
+        ...(ingredientData.meals || []),
+      ];
+      const uniqueMeals = Array.from(
+        new Map(combinedMeals.map((meal) => [meal.idMeal, meal])).values()
+      );
+
+      if (uniqueMeals.length > 0) {
+        setRecipes(uniqueMeals);
       } else {
         setError("No recipes found. Try another search term.");
       }
@@ -50,16 +63,21 @@ export default function EatFreshRecipeFinder() {
           <div className="flex space-x-2">
             <Input
               type="text"
-              placeholder="Enter a recipe name..."
+              placeholder="Enter a recipe name or ingredient..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="flex-grow"
             />
-            <Button onClick={handleSearchRecipe} disabled={loading}>
+            <Button onClick={handleSearch} disabled={loading}>
               {loading ? "Searching..." : <Search className="h-4 w-4" />}
+              <span className="sr-only">Search recipes</span>
             </Button>
           </div>
-          {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+          {error && (
+            <p className="text-red-500 text-center mt-2" role="alert">
+              {error}
+            </p>
+          )}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {recipes.map((recipe) => (
@@ -80,6 +98,11 @@ export default function EatFreshRecipeFinder() {
             </Card>
           ))}
         </div>
+        {recipes.length > 0 && (
+          <p className="text-center mt-4" role="status">
+            Found {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"}
+          </p>
+        )}
       </div>
     </div>
   );
