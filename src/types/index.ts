@@ -24,3 +24,13 @@ interface RecipeDetails {
 interface RecipeDetailProps {
   recipe: RecipeDetails;
 }
+
+interface RandomRecipes {
+  idMeal: string;
+  strMeal: string;
+  strMealThumb: string;
+  strInstructions: string;
+  strCategory: string;
+  strArea: string;
+  [key: string]: string;
+}

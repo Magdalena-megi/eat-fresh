@@ -1,9 +1,9 @@
-import EatFreshRecipeFinder from "@/component/EatFreshRecipeFinder";
+import NavBar from "@/component/NavBar";
 
 export default function Home() {
   return (
     <div>
-      <EatFreshRecipeFinder />
+      <NavBar />
     </div>
   );
 }
