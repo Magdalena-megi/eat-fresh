@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Search } from "lucide-react";
+import { Search, Heart } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import RecipeDetail from "./RecipeDetail";
 
-export default function RecipeSearchApp() {
+export default function RecipeSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [foundRecipes, setFoundRecipes] = useState<Recipe[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -96,13 +96,22 @@ export default function RecipeSearchApp() {
               key={recipe.idMeal}
               className="bg-white shadow-lg rounded-lg overflow-hidden"
             >
-              <Image
-                src={recipe.strMealThumb}
-                alt={recipe.strMeal}
-                width={300}
-                height={200}
-                className="w-full h-48 object-cover"
-              />
+              <div className="relative">
+                <Image
+                  src={recipe.strMealThumb}
+                  alt={recipe.strMeal}
+                  width={300}
+                  height={200}
+                  className="w-full h-48 object-cover"
+                />
+                <Button
+                  variant="ghost"
+                  className="absolute top-2 right-2 p-2 bg-white rounded-full"
+                >
+                  <Heart className="h-6 w-6 text-gray-500" />
+                  <span className="sr-only">Favorite</span>
+                </Button>
+              </div>
               <CardHeader>
                 <CardTitle className="text-lg">{recipe.strMeal}</CardTitle>
               </CardHeader>
