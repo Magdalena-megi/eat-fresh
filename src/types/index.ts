@@ -34,3 +34,8 @@ interface RandomRecipes {
   strArea: string;
   [key: string]: string;
 }
+
+interface FavoriteProps {
+  recipeId: string;
+  recipeName: string;
+}

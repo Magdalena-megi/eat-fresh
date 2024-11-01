@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Shuffle, Heart } from "lucide-react";
+import { Shuffle } from "lucide-react";
+import Favorite from "./Favorite";
 
 export default function RandomRecipe() {
   const [recipe, setRecipe] = useState<RandomRecipes | null>(null);
@@ -59,13 +60,7 @@ export default function RandomRecipe() {
           className="object-cover rounded-t-3xl"
           priority
         />
-        <Button
-          variant="ghost"
-          className="absolute top-2 right-2 p-2 bg-white rounded-full"
-        >
-          <Heart className="h-6 w-6 text-gray-500" />
-          <span className="sr-only">Favorite</span>
-        </Button>
+        <Favorite recipeId={recipe.idMeal} recipeName={recipe.strMeal} />
       </div>
 
       <div className="p-8">
