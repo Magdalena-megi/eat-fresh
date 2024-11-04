@@ -9,6 +9,7 @@ import Favorite from "./Favorite";
 import RecipeDetail from "./RecipeDetail";
 import useLocalStorage from "@/hooks/localstorage";
 import RecipeSearch from "./SearchTab";
+import History from "./History";
 
 export default function NavBar() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -18,6 +19,7 @@ export default function NavBar() {
   const [selectedRecipe, setSelectedRecipe] = useState<RecipeDetails | null>(
     null
   );
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchFavoriteRecipes = async () => {
@@ -59,20 +61,28 @@ export default function NavBar() {
     setCurrentPage("search");
   };
 
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+    setCurrentPage("search");
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case "search":
         return selectedRecipe ? (
           <RecipeDetail recipe={selectedRecipe} />
         ) : (
-          <RecipeSearch onViewRecipe={handleViewRecipe} />
+          <RecipeSearch
+            onViewRecipe={handleViewRecipe}
+            initialSearchTerm={searchTerm}
+          />
         );
       case "random":
         return <RandomRecipe />;
       case "favorites":
         return renderFavorites();
       case "history":
-        return <div>History page (not implemented yet)</div>;
+        return <History onSearch={handleSearch} />;
       default:
         return (
           <div className="space-y-12">
@@ -201,6 +211,7 @@ export default function NavBar() {
           onClick={() => {
             setCurrentPage("search");
             setSelectedRecipe(null);
+            setSearchTerm("");
           }}
         >
           <Search className="h-6 w-6" />

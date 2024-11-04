@@ -47,3 +47,12 @@ interface FavoriteProps {
 interface RecipeSearchProps {
   onViewRecipe: (recipe: Recipe) => void;
 }
+
+interface RecipeSearchProps {
+  onViewRecipe: (recipe: Recipe) => void;
+  initialSearchTerm?: string;
+}
+
+interface HistoryProps {
+  onSearch: (term: string) => void;
+}

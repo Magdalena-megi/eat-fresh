@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -9,12 +9,19 @@ import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import Favorite from "./Favorite";
 import useLocalStorage from "@/hooks/localstorage";
 
-export default function RecipeSearch({ onViewRecipe }: RecipeSearchProps) {
-  const [searchTerm, setSearchTerm] = useState("");
+export default function RecipeSearch({
+  onViewRecipe,
+  initialSearchTerm = "",
+}: RecipeSearchProps) {
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [foundRecipes, setFoundRecipes] = useState<Recipe[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [favorites, setFavorites] = useLocalStorage<string[]>("favorites", []);
+  const [searchHistory, setSearchHistory] = useLocalStorage<string[]>(
+    "searchHistory",
+    []
+  );
 
   const searchRecipes = async () => {
     if (!searchTerm.trim()) return;
@@ -43,10 +50,13 @@ export default function RecipeSearch({ onViewRecipe }: RecipeSearchProps) {
       ];
       const distinctRecipes = Array.from(
         new Map(combinedResults.map((meal) => [meal.idMeal, meal])).values()
-      );
+      ) as Recipe[];
 
       if (distinctRecipes.length > 0) {
         setFoundRecipes(distinctRecipes);
+        if (!searchHistory.includes(searchTerm)) {
+          setSearchHistory((prev) => [searchTerm, ...prev.slice(0, 9)]);
+        }
       } else {
         setErrorMsg("No recipes found. Try another search term.");
       }
@@ -60,11 +70,20 @@ export default function RecipeSearch({ onViewRecipe }: RecipeSearchProps) {
   };
 
   const handleFavoriteChange = (recipeId: string, isFavorite: boolean) => {
-    const updatedFavorites = isFavorite
-      ? [...favorites, recipeId]
-      : favorites.filter((id) => id !== recipeId);
-    setFavorites(updatedFavorites);
+    setFavorites((prev) => {
+      if (isFavorite) {
+        return [...prev, recipeId];
+      } else {
+        return prev.filter((id) => id !== recipeId);
+      }
+    });
   };
+
+  useEffect(() => {
+    if (initialSearchTerm) {
+      searchRecipes();
+    }
+  }, [initialSearchTerm]);
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
@@ -77,6 +96,11 @@ export default function RecipeSearch({ onViewRecipe }: RecipeSearchProps) {
               placeholder="Enter a recipe name or ingredient..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  searchRecipes();
+                }
+              }}
               className="flex-grow"
             />
             <Button onClick={searchRecipes} disabled={isLoading}>
