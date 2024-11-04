@@ -6,15 +6,13 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import RecipeDetail from "./RecipeDetail";
 import Favorite from "./Favorite";
 
-export default function RecipeSearch() {
+export default function RecipeSearch({ onViewRecipe }: RecipeSearchProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [foundRecipes, setFoundRecipes] = useState<Recipe[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [currentRecipe, setCurrentRecipe] = useState<Recipe | null>(null);
 
   const searchRecipes = async () => {
     if (!searchTerm.trim()) return;
@@ -58,14 +56,6 @@ export default function RecipeSearch() {
       setIsLoading(false);
     }
   };
-
-  const viewRecipeDetails = (recipe: Recipe) => {
-    setCurrentRecipe(recipe);
-  };
-
-  if (currentRecipe) {
-    return <RecipeDetail recipe={currentRecipe} />;
-  }
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
@@ -117,7 +107,7 @@ export default function RecipeSearch() {
                 <Button
                   variant="outline"
                   className="w-full"
-                  onClick={() => viewRecipeDetails(recipe)}
+                  onClick={() => onViewRecipe(recipe)}
                 >
                   View More
                 </Button>

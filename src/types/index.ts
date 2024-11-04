@@ -44,3 +44,6 @@ interface FavoriteProps {
   recipeName: string;
   onFavoriteChange?: (isFavorite: boolean) => void;
 }
+interface RecipeSearchProps {
+  onViewRecipe: (recipe: Recipe) => void;
+}

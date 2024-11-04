@@ -5,15 +5,17 @@ import Image from "next/image";
 import { Home, Search, Heart, Clock, Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import RandomRecipe from "./RandomRecipe";
-import SearchTab from "./SearchTab";
 import Favorite from "./Favorite";
+import RecipeDetail from "./RecipeDetail";
 import useLocalStorage from "@/hooks/localstorage";
+import RecipeSearch from "./SearchTab";
 
 export default function NavBar() {
   const [currentPage, setCurrentPage] = useState("home");
   const [favorites] = useLocalStorage<string[]>("favorites", []);
   const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
 
   useEffect(() => {
     const fetchFavoriteRecipes = async () => {
@@ -47,10 +49,19 @@ export default function NavBar() {
     }
   };
 
+  const handleViewRecipe = (recipe: Recipe) => {
+    setSelectedRecipe(recipe);
+    setCurrentPage("search");
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case "search":
-        return <SearchTab />;
+        return selectedRecipe ? (
+          <RecipeDetail recipe={selectedRecipe} />
+        ) : (
+          <RecipeSearch onViewRecipe={handleViewRecipe} />
+        );
       case "random":
         return <RandomRecipe />;
       case "favorites":
@@ -132,7 +143,11 @@ export default function NavBar() {
               </div>
               <div className="p-4">
                 <h3 className="text-lg font-semibold mb-2">{recipe.strMeal}</h3>
-                <Button variant="outline" className="w-full">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => handleViewRecipe(recipe)}
+                >
                   View Recipe
                 </Button>
               </div>
@@ -180,7 +195,10 @@ export default function NavBar() {
               ? "text-gray-900 bg-white"
               : "text-gray-600"
           } hover:text-gray-900`}
-          onClick={() => setCurrentPage("search")}
+          onClick={() => {
+            setCurrentPage("search");
+            setSelectedRecipe(null);
+          }}
         >
           <Search className="h-6 w-6" />
           <span>Search</span>
