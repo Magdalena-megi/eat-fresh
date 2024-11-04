@@ -17,29 +17,27 @@ export default function NavBar() {
 
   useEffect(() => {
     const fetchFavoriteRecipes = async () => {
-      if (currentPage === "favorites") {
-        setIsLoading(true);
-        try {
-          const recipes = await Promise.all(
-            favorites.map(async (id) => {
-              const response = await fetch(
-                `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
-              );
-              const data = await response.json();
-              return data.meals?.[0];
-            })
-          );
-          setFavoriteRecipes(recipes.filter(Boolean));
-        } catch (error) {
-          console.error("Error fetching favorite recipes:", error);
-        } finally {
-          setIsLoading(false);
-        }
+      setIsLoading(true);
+      try {
+        const recipes = await Promise.all(
+          favorites.map(async (id) => {
+            const response = await fetch(
+              `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
+            );
+            const data = await response.json();
+            return data.meals?.[0];
+          })
+        );
+        setFavoriteRecipes(recipes.filter(Boolean));
+      } catch (error) {
+        console.error("Error fetching favorite recipes:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchFavoriteRecipes();
-  }, [currentPage, favorites]);
+  }, [favorites]);
 
   const renderPage = () => {
     switch (currentPage) {
@@ -53,28 +51,31 @@ export default function NavBar() {
         return <div>History page (not implemented yet)</div>;
       default:
         return (
-          <div className="text-center space-y-6">
-            <h1 className="text-4xl font-bold">Welcome to EatFresh!</h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Find your next meal with our recipe finder. You can search for
-              recipes, generate random recipes, or check out your favorites.
-            </p>
-            <div className="flex justify-center gap-4 pt-4">
-              <Button
-                onClick={() => setCurrentPage("search")}
-                className="bg-black text-white hover:bg-gray-800 text-lg px-8 py-6"
-              >
-                Start Searching
-              </Button>
-              <Button
-                onClick={() => setCurrentPage("random")}
-                variant="outline"
-                className="text-lg px-8 py-6"
-              >
-                <Shuffle className="mr-2 h-5 w-5" />
-                Random Recipe
-              </Button>
+          <div className="space-y-12">
+            <div className="text-center space-y-6">
+              <h1 className="text-4xl font-bold">Welcome to EatFresh!</h1>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Find your next meal with our recipe finder. You can search for
+                recipes, generate random recipes, or check out your favorites.
+              </p>
+              <div className="flex justify-center gap-4 pt-4">
+                <Button
+                  onClick={() => setCurrentPage("search")}
+                  className="bg-black text-white hover:bg-gray-800 text-lg px-8 py-6"
+                >
+                  Start Searching
+                </Button>
+                <Button
+                  onClick={() => setCurrentPage("random")}
+                  variant="outline"
+                  className="text-lg px-8 py-6"
+                >
+                  <Shuffle className="mr-2 h-5 w-5" />
+                  Random Recipe
+                </Button>
+              </div>
             </div>
+            {renderFavorites()}
           </div>
         );
     }
