@@ -7,12 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import Favorite from "./Favorite";
+import useLocalStorage from "@/hooks/localstorage";
 
 export default function RecipeSearch({ onViewRecipe }: RecipeSearchProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [foundRecipes, setFoundRecipes] = useState<Recipe[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [favorites, setFavorites] = useLocalStorage<string[]>("favorites", []);
 
   const searchRecipes = async () => {
     if (!searchTerm.trim()) return;
@@ -57,6 +59,13 @@ export default function RecipeSearch({ onViewRecipe }: RecipeSearchProps) {
     }
   };
 
+  const handleFavoriteChange = (recipeId: string, isFavorite: boolean) => {
+    const updatedFavorites = isFavorite
+      ? [...favorites, recipeId]
+      : favorites.filter((id) => id !== recipeId);
+    setFavorites(updatedFavorites);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
@@ -98,6 +107,7 @@ export default function RecipeSearch({ onViewRecipe }: RecipeSearchProps) {
                 <Favorite
                   recipeId={recipe.idMeal}
                   recipeName={recipe.strMeal}
+                  onFavoriteChange={handleFavoriteChange}
                 />
               </div>
               <CardHeader>

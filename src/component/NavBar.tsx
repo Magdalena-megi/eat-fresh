@@ -12,10 +12,12 @@ import RecipeSearch from "./SearchTab";
 
 export default function NavBar() {
   const [currentPage, setCurrentPage] = useState("home");
-  const [favorites] = useLocalStorage<string[]>("favorites", []);
-  const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([]);
+  const [favorites, setFavorites] = useLocalStorage<string[]>("favorites", []);
+  const [favoriteRecipes, setFavoriteRecipes] = useState<RecipeDetails[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [selectedRecipe, setSelectedRecipe] = useState<RecipeDetails | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchFavoriteRecipes = async () => {
@@ -27,7 +29,7 @@ export default function NavBar() {
               `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
             );
             const data = await response.json();
-            return data.meals?.[0];
+            return data.meals?.[0] as RecipeDetails;
           })
         );
         setFavoriteRecipes(recipes.filter(Boolean));
@@ -42,14 +44,17 @@ export default function NavBar() {
   }, [favorites]);
 
   const handleFavoriteChange = (recipeId: string, isFavorite: boolean) => {
-    if (!isFavorite) {
+    if (isFavorite) {
+      setFavorites([...favorites, recipeId]);
+    } else {
+      setFavorites(favorites.filter((id) => id !== recipeId));
       setFavoriteRecipes((prevRecipes) =>
         prevRecipes.filter((recipe) => recipe.idMeal !== recipeId)
       );
     }
   };
 
-  const handleViewRecipe = (recipe: Recipe) => {
+  const handleViewRecipe = (recipe: RecipeDetails) => {
     setSelectedRecipe(recipe);
     setCurrentPage("search");
   };
@@ -136,9 +141,7 @@ export default function NavBar() {
                 <Favorite
                   recipeId={recipe.idMeal}
                   recipeName={recipe.strMeal}
-                  onFavoriteChange={(isFavorite) =>
-                    handleFavoriteChange(recipe.idMeal, isFavorite)
-                  }
+                  onFavoriteChange={handleFavoriteChange}
                 />
               </div>
               <div className="p-4">

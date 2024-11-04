@@ -7,7 +7,7 @@ import useLocalStorage from "@/hooks/localstorage";
 interface FavoriteProps {
   recipeId: string;
   recipeName: string;
-  onFavoriteChange?: (isFavorite: boolean) => void;
+  onFavoriteChange?: (recipeId: string, isFavorite: boolean) => void;
 }
 
 export default function Favorite({
@@ -20,12 +20,18 @@ export default function Favorite({
   const isFavorite = favorites.includes(recipeId);
 
   const updateFavoriteStatus = () => {
-    const updatedFavorites = isFavorite
-      ? favorites.filter((id) => id !== recipeId)
-      : [...favorites, recipeId];
+    const newIsFavorite = !isFavorite;
+    const updatedFavorites = newIsFavorite
+      ? [...favorites, recipeId]
+      : favorites.filter((id) => id !== recipeId);
 
     setFavorites(updatedFavorites);
-    onFavoriteChange?.(!isFavorite);
+
+    if (onFavoriteChange) {
+      onFavoriteChange(recipeId, newIsFavorite);
+    }
+
+    window.location.reload();
   };
 
   return (
@@ -40,7 +46,9 @@ export default function Favorite({
       }
     >
       <Heart
-        className={`h-6 w-6 ${isFavorite ? "fill-red-500 text-red-500" : "text-gray-500"}`}
+        className={`h-6 w-6 ${
+          isFavorite ? "fill-red-500 text-red-500" : "text-gray-500"
+        }`}
       />
     </Button>
   );
