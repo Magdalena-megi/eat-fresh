@@ -39,6 +39,14 @@ export default function NavBar() {
     fetchFavoriteRecipes();
   }, [favorites]);
 
+  const handleFavoriteChange = (recipeId: string, isFavorite: boolean) => {
+    if (!isFavorite) {
+      setFavoriteRecipes((prevRecipes) =>
+        prevRecipes.filter((recipe) => recipe.idMeal !== recipeId)
+      );
+    }
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case "search":
@@ -117,6 +125,9 @@ export default function NavBar() {
                 <Favorite
                   recipeId={recipe.idMeal}
                   recipeName={recipe.strMeal}
+                  onFavoriteChange={(isFavorite) =>
+                    handleFavoriteChange(recipe.idMeal, isFavorite)
+                  }
                 />
               </div>
               <div className="p-4">

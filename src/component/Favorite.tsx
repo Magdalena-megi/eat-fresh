@@ -4,36 +4,44 @@ import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useLocalStorage from "@/hooks/localstorage";
 
-export default function Favorite({ recipeId, recipeName }: FavoriteProps) {
+interface FavoriteProps {
+  recipeId: string;
+  recipeName: string;
+  onFavoriteChange?: (isFavorite: boolean) => void;
+}
+
+export default function Favorite({
+  recipeId,
+  recipeName,
+  onFavoriteChange,
+}: FavoriteProps) {
   const [favorites, setFavorites] = useLocalStorage<string[]>("favorites", []);
 
-  const isCurrentlyFavorite = favorites.includes(recipeId);
+  const isFavorite = favorites.includes(recipeId);
 
-  const toggleFavorite = () => {
-    if (isCurrentlyFavorite) {
-      setFavorites(favorites.filter((id) => id !== recipeId));
-    } else {
-      setFavorites([...favorites, recipeId]);
-    }
-    console.log(recipeId, "RecipeID");
+  const updateFavoriteStatus = () => {
+    const updatedFavorites = isFavorite
+      ? favorites.filter((id) => id !== recipeId)
+      : [...favorites, recipeId];
+
+    setFavorites(updatedFavorites);
+    onFavoriteChange?.(!isFavorite);
   };
 
   return (
     <Button
       variant="ghost"
       className="absolute top-2 right-2 p-2 bg-white rounded-full"
-      onClick={toggleFavorite}
+      onClick={updateFavoriteStatus}
+      aria-label={
+        isFavorite
+          ? `Remove ${recipeName} from favorites`
+          : `Add ${recipeName} to favorites`
+      }
     >
       <Heart
-        className={`h-6 w-6 ${
-          isCurrentlyFavorite ? "fill-red-500 text-red-500" : "text-gray-500"
-        }`}
+        className={`h-6 w-6 ${isFavorite ? "fill-red-500 text-red-500" : "text-gray-500"}`}
       />
-      <span className="sr-only">
-        {isCurrentlyFavorite
-          ? `Remove ${recipeName} from favorites`
-          : `Add ${recipeName} to favorites`}
-      </span>
     </Button>
   );
 }

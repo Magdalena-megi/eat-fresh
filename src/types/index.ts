@@ -39,3 +39,8 @@ interface FavoriteProps {
   recipeId: string;
   recipeName: string;
 }
+interface FavoriteProps {
+  recipeId: string;
+  recipeName: string;
+  onFavoriteChange?: (isFavorite: boolean) => void;
+}
