@@ -205,7 +205,7 @@ export default function NavBar() {
           className={`flex flex-col items-center gap-1 ${
             currentPage === "home" ? "text-gray-900 bg-white" : "text-gray-600"
           } px-8 py-2 rounded-lg`}
-          onClick={() => setCurrentPage}
+          onClick={() => setCurrentPage("home")}
         >
           <Home className="h-6 w-6" />
           <span>Home</span>
