@@ -30,6 +30,11 @@ export default function NavBar() {
             const response = await fetch(
               `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
             );
+
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+
             const data = await response.json();
             return data.meals?.[0] as RecipeDetails;
           })
@@ -37,12 +42,15 @@ export default function NavBar() {
         setFavoriteRecipes(recipes.filter(Boolean));
       } catch (error) {
         console.error("Error fetching favorite recipes:", error);
+        alert("Failed to fetch favorite recipes. Please try again later.");
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchFavoriteRecipes();
+    if (favorites.length > 0) {
+      fetchFavoriteRecipes();
+    }
   }, [favorites]);
 
   const handleFavoriteChange = (recipeId: string, isFavorite: boolean) => {
@@ -66,7 +74,7 @@ export default function NavBar() {
     setCurrentPage("search");
   };
 
-  const renderPage = () => {
+  const displayPageContent = () => {
     switch (currentPage) {
       case "search":
         return selectedRecipe ? (
@@ -243,7 +251,9 @@ export default function NavBar() {
         </Button>
       </nav>
 
-      <main className="max-w-4xl mx-auto px-4 py-12">{renderPage()}</main>
+      <main className="max-w-4xl mx-auto px-4 py-12">
+        {displayPageContent()}
+      </main>
     </div>
   );
 }

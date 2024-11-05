@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import Favorite from "./Favorite";
 import useLocalStorage from "@/hooks/localstorage";
+import { toast } from "@/hooks/use-toast";
 
 export default function RecipeSearch({
   onViewRecipe,
@@ -58,12 +59,35 @@ export default function RecipeSearch({
           setSearchHistory((prev) => [searchTerm, ...prev.slice(0, 9)]);
         }
       } else {
-        setErrorMsg("No recipes found. Try another search term.");
+        toast({
+          title: "Uh oh! No recipes found.",
+          description: "Try another search term.",
+          duration: 3000,
+          style: {
+            backgroundColor: "red",
+            color: "white",
+          },
+        });
       }
     } catch (error) {
-      setErrorMsg(
-        "An error occurred while fetching recipes. Please try again."
-      );
+      if (error instanceof TypeError && error.message.includes("failed")) {
+        toast({
+          title: "Network Error",
+          description:
+            "It seems you are not connected to the internet. Please check your Wi-Fi connection.",
+          duration: 3000,
+          style: {
+            backgroundColor: "red",
+            color: "white",
+          },
+        });
+      } else {
+        toast({
+          title: "An error occurred while fetching recipes",
+          description: "Please try again.",
+          duration: 3000,
+        });
+      }
     } finally {
       setIsLoading(false);
     }

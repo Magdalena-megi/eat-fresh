@@ -26,6 +26,10 @@ export default function History({ onSearch }: HistoryProps) {
     toast({
       description: `The search term "${term}" was successfully deleted.`,
       duration: 3000,
+      style: {
+        backgroundColor: "green",
+        color: "white",
+      },
     });
   };
 

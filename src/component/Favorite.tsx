@@ -3,6 +3,8 @@
 import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useLocalStorage from "@/hooks/localstorage";
+import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 
 interface FavoriteProps {
   recipeId: string;
@@ -16,6 +18,7 @@ export default function Favorite({
   onFavoriteChange,
 }: FavoriteProps) {
   const [favorites, setFavorites] = useLocalStorage<string[]>("favorites", []);
+  const { toast } = useToast();
 
   const isFavorite = favorites.includes(recipeId);
 
@@ -31,8 +34,25 @@ export default function Favorite({
       onFavoriteChange(recipeId, newIsFavorite);
     }
 
+    const message = newIsFavorite
+      ? `✅ Added ${recipeName}  to favorites.`
+      : `🗑️ Removed "${recipeName}" from favorites.`;
+    localStorage.setItem("toastMessage", message);
+
     window.location.reload();
   };
+
+  useEffect(() => {
+    const message = localStorage.getItem("toastMessage");
+    if (message) {
+      toast({
+        description: message,
+        duration: 3000,
+      });
+
+      localStorage.removeItem("toastMessage");
+    }
+  }, [toast]);
 
   return (
     <Button
