@@ -3,6 +3,7 @@
 import { X, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useLocalStorage from "@/hooks/localstorage";
+import { useToast } from "@/hooks/use-toast";
 
 export default function History({ onSearch }: HistoryProps) {
   const [searchHistory, setSearchHistory] = useLocalStorage<string[]>(
@@ -10,16 +11,36 @@ export default function History({ onSearch }: HistoryProps) {
     []
   );
 
-  const clearHistory = () => setSearchHistory([]);
-  const removeFromHistory = (term: string) =>
+  const { toast } = useToast();
+
+  const clearHistory = () => {
+    setSearchHistory([]);
+    toast({
+      description: "Your search history has been successfully cleared.",
+      duration: 3000,
+    });
+  };
+
+  const removeFromHistory = (term: string) => {
     setSearchHistory((prev) => prev.filter((item) => item !== term));
+    toast({
+      description: `The search term "${term}" was successfully deleted.`,
+      duration: 3000,
+    });
+  };
+
   const retrySearch = (term: string) => onSearch(term);
 
   return (
     <div className="space-y-6">
       <header className="flex justify-between items-center">
         <h1 className="text-4xl font-bold">Your Search History</h1>
-        <Button variant="outline" onClick={clearHistory} className="px-6">
+        <Button
+          variant="outline"
+          onClick={clearHistory}
+          className="px-6"
+          disabled={searchHistory.length === 0}
+        >
           Clear History
         </Button>
       </header>
