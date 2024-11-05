@@ -36,7 +36,7 @@ export default function Favorite({
 
     const message = newIsFavorite
       ? `✅ Added ${recipeName}  to favorites.`
-      : `🗑️ Removed "${recipeName}" from favorites.`;
+      : `🗑️ Removed ${recipeName} from favorites.`;
     localStorage.setItem("toastMessage", message);
 
     window.location.reload();

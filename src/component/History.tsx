@@ -18,6 +18,10 @@ export default function History({ onSearch }: HistoryProps) {
     toast({
       description: "Your search history has been successfully cleared.",
       duration: 3000,
+      style: {
+        backgroundColor: "green",
+        color: "white",
+      },
     });
   };
 

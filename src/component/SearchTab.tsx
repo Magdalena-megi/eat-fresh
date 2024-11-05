@@ -127,7 +127,10 @@ export default function RecipeSearch({
               }}
               className="flex-grow"
             />
-            <Button onClick={searchRecipes} disabled={isLoading}>
+            <Button
+              onClick={searchRecipes}
+              disabled={searchTerm.trim().length === 0}
+            >
               {isLoading ? "Searching..." : <Search className="h-4 w-4" />}
               <span className="sr-only">Search recipes</span>
             </Button>
