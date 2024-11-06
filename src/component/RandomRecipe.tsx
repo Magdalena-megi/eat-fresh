@@ -104,7 +104,7 @@ export default function RandomRecipe() {
 
         <Button
           onClick={fetchRandomRecipe}
-          className="w-full bg-[#14162c] hover:bg-[#1a1d3c] text-white py-6"
+          className="bg-green-600 w-full hover:bg-green-700 text-white py-6 transition-colors duration-200"
         >
           <Shuffle className="mr-2 h-5 w-5" />
           Get Another Random Recipe

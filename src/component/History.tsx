@@ -44,9 +44,8 @@ export default function History({ onSearch }: HistoryProps) {
       <header className="flex justify-between items-center">
         <h1 className="text-4xl font-bold">Your Search History</h1>
         <Button
-          variant="outline"
           onClick={clearHistory}
-          className="px-6"
+          className="px-6 bg-green-600 text-white hover:bg-green-700 transition-colors duration-200"
           disabled={searchHistory.length === 0}
         >
           Clear History

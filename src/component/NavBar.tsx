@@ -103,7 +103,7 @@ export default function NavBar() {
               <div className="flex justify-center gap-4 pt-4">
                 <Button
                   onClick={() => setCurrentPage("search")}
-                  className="bg-black text-white hover:bg-gray-800 text-lg px-8 py-6"
+                  className="bg-green-600 text-white hover:bg-green-700 text-lg px-8 py-6 transition-colors duration-200"
                 >
                   Start Searching
                 </Button>
@@ -194,7 +194,7 @@ export default function NavBar() {
               width={150}
               height={150}
               className="object-contain cursor-pointer"
-              onClick={() => setCurrentPage("/Home")}
+              onClick={() => setCurrentPage("home")}
             />
           </div>
         </div>
@@ -203,8 +203,10 @@ export default function NavBar() {
         <Button
           variant="ghost"
           className={`flex flex-col items-center gap-1 ${
-            currentPage === "home" ? "text-gray-900 bg-white" : "text-gray-600"
-          } px-8 py-2 rounded-lg`}
+            currentPage === "home"
+              ? "text-green-600 bg-white"
+              : "text-gray-600 hover:text-green-600"
+          } px-8 py-2 rounded-lg transition-colors duration-200`}
           onClick={() => setCurrentPage("home")}
         >
           <Home className="h-6 w-6" />
@@ -214,9 +216,9 @@ export default function NavBar() {
           variant="ghost"
           className={`flex flex-col items-center gap-1 ${
             currentPage === "search"
-              ? "text-gray-900 bg-white"
-              : "text-gray-600"
-          } hover:text-gray-900`}
+              ? "text-green-600 bg-white"
+              : "text-gray-600 hover:text-green-600"
+          } px-8 py-2 rounded-lg transition-colors duration-200`}
           onClick={() => {
             setCurrentPage("search");
             setSelectedRecipe(null);
@@ -230,9 +232,9 @@ export default function NavBar() {
           variant="ghost"
           className={`flex flex-col items-center gap-1 ${
             currentPage === "favorites"
-              ? "text-gray-900 bg-white"
-              : "text-gray-600"
-          } hover:text-gray-900`}
+              ? "text-green-600 bg-white"
+              : "text-gray-600 hover:text-green-600"
+          } px-8 py-2 rounded-lg transition-colors duration-200`}
           onClick={() => setCurrentPage("favorites")}
         >
           <Heart className="h-6 w-6" />
@@ -242,9 +244,9 @@ export default function NavBar() {
           variant="ghost"
           className={`flex flex-col items-center gap-1 ${
             currentPage === "history"
-              ? "text-gray-900 bg-white"
-              : "text-gray-600"
-          } hover:text-gray-900`}
+              ? "text-green-600 bg-white"
+              : "text-gray-600 hover:text-green-600"
+          } px-8 py-2 rounded-lg transition-colors duration-200`}
           onClick={() => setCurrentPage("history")}
         >
           <Clock className="h-6 w-6" />
