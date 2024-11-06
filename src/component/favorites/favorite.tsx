@@ -5,12 +5,7 @@ import { Button } from "@/components/ui/button";
 import useLocalStorage from "@/hooks/localstorage";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
-
-interface FavoriteProps {
-  recipeId: string;
-  recipeName: string;
-  onFavoriteChange?: (recipeId: string, isFavorite: boolean) => void;
-}
+import { FavoriteProps } from "@/types";
 
 export default function Favorite({
   recipeId,

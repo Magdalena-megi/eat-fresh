@@ -1,58 +1,120 @@
-type Recipe = {
+import { ReactElement } from "react";
+
+export type Recipe = {
   idMeal: string;
   strMeal: string;
   strInstructions: string;
   strMealThumb: string;
   strIngredients: string[];
+  strMeasures: string[];
 };
-interface RecipeDetails {
-  idMeal: string;
-  strMeal: string;
-  strMealThumb: string;
-  strInstructions: string;
-  strIngredient1?: string;
-  strIngredient2?: string;
-  strIngredient3?: string;
-  strIngredient4?: string;
-  strIngredient5?: string;
-  strMeasure1?: string;
-  strMeasure2?: string;
-  strMeasure3?: string;
-  strMeasure4?: string;
-  strMeasure5?: string;
+
+export interface RecipeDetails extends Recipe {
+  strCategory?: string;
+  strArea?: string;
+  [key: string]: string | string[] | undefined;
 }
-interface RecipeDetailProps {
+
+export type RandomRecipes = RecipeDetails;
+
+export interface Ingredient {
+  ingredient: string;
+  measure: string;
+}
+
+export type PageName = "home" | "search" | "favorites" | "history" | "random";
+
+export interface FavoriteProps {
+  recipeId: string;
+  recipeName: string;
+  onFavoriteChange?: (recipeId: string, isFavorite: boolean) => void;
+}
+
+export interface FavoriteButtonProps {
+  isFavorite: boolean;
+  recipeName: string;
+  onClick: () => void;
+}
+
+export interface FavoritesSectionProps {
+  onViewRecipe: (recipe: RecipeDetails) => void;
+}
+
+export interface HistoryProps {
+  onSearch: (term: string) => void;
+}
+
+export interface HistoryHeaderProps {
+  clearHistory: () => void;
+  isHistoryEmpty: boolean;
+}
+
+export interface HistoryListProps {
+  searchHistory: string[];
+  retrySearch: (term: string) => void;
+  removeFromHistory: (term: string) => void;
+}
+
+export interface HistoryItemProps {
+  term: string;
+  retrySearch: (term: string) => void;
+  removeFromHistory: (term: string) => void;
+}
+
+export interface HeaderProps {
+  setCurrentPage: (page: string) => void;
+}
+
+export interface NavItemProps {
+  icon: React.ElementType;
+  label: string;
+  page: PageName;
+  isActive: boolean;
+  onClick: () => void;
+}
+
+export interface RecipeDetailProps {
   recipe: RecipeDetails;
 }
 
-interface RandomRecipes {
-  idMeal: string;
-  strMeal: string;
-  strMealThumb: string;
-  strInstructions: string;
-  strCategory: string;
-  strArea: string;
-  [key: string]: string;
+export interface InstructionsSectionProps {
+  instructions: string;
 }
 
-interface FavoriteProps {
+export interface IngredientsListProps {
+  recipe: RecipeDetails;
+  ingredients: Ingredient[];
+}
+
+export interface RecipeImageProps {
+  src: string;
+  alt: string;
   recipeId: string;
   recipeName: string;
 }
-interface FavoriteProps {
-  recipeId: string;
-  recipeName: string;
-  onFavoriteChange?: (isFavorite: boolean) => void;
-}
-interface RecipeSearchProps {
-  onViewRecipe: (recipe: Recipe) => void;
-}
 
-interface RecipeSearchProps {
-  onViewRecipe: (recipe: Recipe) => void;
+export interface RecipeSearchProps {
+  onViewRecipe: (recipe: RecipeDetails) => void;
   initialSearchTerm?: string;
 }
 
-interface HistoryProps {
-  onSearch: (term: string) => void;
+export interface RandomRecipeButtonProps {
+  onClick: () => void;
+}
+
+export interface SearchInputProps {
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  searchRecipes: () => void;
+  isLoading: boolean;
+}
+
+export interface FavoriteToastProps {
+  message: string | null;
+}
+
+export interface RecipeCardProps {
+  recipe: Recipe;
+  onViewRecipe: (recipe: Recipe) => void;
+  handleFavoriteChange: (recipeId: string, isFavorite: boolean) => void;
 }
