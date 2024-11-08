@@ -1,11 +1,9 @@
 import { History } from "@/component/history";
 
-export default function HistroyPage() {
-  return (
-    <History
-      onSearch={function (term: string): void {
-        throw new Error("Function not implemented.");
-      }}
-    />
-  );
+export default function HistoryPage() {
+  const onSearch = (term: string) => {
+    console.log(`Searching for: ${term}`);
+  };
+
+  return <History onSearch={onSearch} />;
 }

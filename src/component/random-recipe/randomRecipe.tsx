@@ -67,13 +67,12 @@ export default function RandomRecipe() {
         alt={recipe.strMeal}
         recipeId={recipe.idMeal}
         recipeName={recipe.strMeal}
-        recipe={undefined}
       />
 
       <div className="p-8">
         <h1 className="text-[32px] font-bold mb-8">{recipe.strMeal}</h1>
 
-        <IngredientsList recipe={recipe} />
+        <IngredientsList recipe={recipe} ingredients={[]} />
         <InstructionsList instructions={recipe.strInstructions} />
 
         <RandomRecipeButton onClick={fetchRandomRecipe} />

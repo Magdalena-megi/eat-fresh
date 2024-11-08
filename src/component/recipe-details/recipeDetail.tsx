@@ -27,7 +27,6 @@ export default function RecipeDetail({ recipe }: RecipeDetailProps) {
         alt={recipe.strMeal}
         recipeId={recipe.idMeal}
         recipeName={recipe.strMeal}
-        recipe={recipe}
       />
       <CardHeader>
         <CardTitle className="text-xl font-semibold text-center mt-4">
@@ -36,7 +35,7 @@ export default function RecipeDetail({ recipe }: RecipeDetailProps) {
       </CardHeader>
       <CardContent>
         <InstructionsSection instructions={recipe.strInstructions} />
-        <IngredientsList ingredients={ingredients} recipe={undefined} />
+        <IngredientsList ingredients={ingredients} recipe={recipe} />
       </CardContent>
     </Card>
   );

@@ -118,3 +118,23 @@ export interface RecipeCardProps {
   onViewRecipe: (recipe: Recipe) => void;
   handleFavoriteChange: (recipeId: string, isFavorite: boolean) => void;
 }
+export interface RecipeImageProps {
+  src: string;
+  alt: string;
+  recipeId: string;
+  recipeName: string;
+}
+
+export interface Ingredient {
+  ingredient: string;
+  measure: string;
+}
+
+export interface IngredientsListProps {
+  ingredients: Ingredient[];
+}
+export interface RecipeListProps {
+  recipes: Recipe[];
+  onViewRecipe: (recipe: Recipe) => void;
+  handleFavoriteChange: (recipeId: string, isFavorite: boolean) => void;
+}

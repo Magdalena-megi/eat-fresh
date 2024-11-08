@@ -1,11 +1,5 @@
-import { Recipe } from "@/types";
+import { RecipeListProps } from "@/types";
 import RecipeCard from "./recipeCard";
-
-interface RecipeListProps {
-  recipes: Recipe[];
-  onViewRecipe: (recipe: Recipe) => void;
-  handleFavoriteChange: (recipeId: string, isFavorite: boolean) => void;
-}
 
 export default function RecipeList({
   recipes,
