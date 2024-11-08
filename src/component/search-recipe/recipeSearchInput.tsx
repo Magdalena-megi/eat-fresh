@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SearchInputProps } from "@/types";
 
-export default function SearchInput({
+export default function RecipeSearchInput({
   searchTerm,
   setSearchTerm,
   searchRecipes,

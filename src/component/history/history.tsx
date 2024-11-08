@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { HistoryHeader, HistoryList } from ".";
 import { HistoryProps } from "@/types";
 
-export default function History({ onSearch }: HistoryProps) {
+export default function HistoryPage({ onSearch }: HistoryProps) {
   const [searchHistory, setSearchHistory] = useLocalStorage<string[]>(
     "searchHistory",
     []
@@ -25,10 +25,10 @@ export default function History({ onSearch }: HistoryProps) {
     });
   };
 
-  const removeFromHistory = (term: string) => {
-    setSearchHistory((prev) => prev.filter((item) => item !== term));
+  const removeFromHistory = (searchTerm: string) => {
+    setSearchHistory((prev) => prev.filter((item) => item !== searchTerm));
     toast({
-      description: `The search term "${term}" was successfully deleted.`,
+      description: `"${searchTerm}" was successfully deleted.`,
       duration: 3000,
       style: {
         backgroundColor: "green",
@@ -37,7 +37,7 @@ export default function History({ onSearch }: HistoryProps) {
     });
   };
 
-  const retrySearch = (term: string) => onSearch(term);
+  const retrySearch = (searchTerm: string) => onSearch(searchTerm);
 
   return (
     <div className="space-y-6">

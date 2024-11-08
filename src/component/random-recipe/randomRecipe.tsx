@@ -1,14 +1,14 @@
-"use client";
-
 import { useState, useEffect } from "react";
-import InstructionsList from "./InstructionsList";
 import { RecipeImage, RandomRecipeButton, IngredientsList } from ".";
 import { RandomRecipes } from "@/types";
+import { useToast } from "@/hooks/use-toast";
+import InstructionsList from "./InstructionsList";
 
-export default function RandomRecipe() {
+export default function RandomRecipePage() {
   const [recipe, setRecipe] = useState<RandomRecipes | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const fetchRandomRecipe = async () => {
     setIsLoading(true);
@@ -21,14 +21,20 @@ export default function RandomRecipe() {
         throw new Error("Failed to fetch recipe");
       }
       const data = await response.json();
-      if (data.meals && data.meals[0]) {
+      if (data.meals?.[0]) {
         setRecipe(data.meals[0]);
       } else {
         throw new Error("No recipe found");
       }
     } catch (error) {
-      console.error("Error fetching random recipe:", error);
-      setError("Failed to fetch recipe. Please try again.");
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred";
+      setError(errorMessage);
+      toast({
+        title: "Error",
+        description: `Failed to fetch recipe: ${errorMessage}. Please try again.`,
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }

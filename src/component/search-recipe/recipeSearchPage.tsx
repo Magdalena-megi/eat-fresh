@@ -6,7 +6,7 @@ import { toast } from "@/hooks/use-toast";
 import { Recipe, RecipeSearchProps } from "@/types";
 import { RecipeList, SearchInput } from ".";
 
-export default function RecipeSearch({
+export default function RecipeSearchPage({
   onViewRecipe,
   initialSearchTerm = "",
 }: RecipeSearchProps) {

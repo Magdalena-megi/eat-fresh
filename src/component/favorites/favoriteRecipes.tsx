@@ -4,9 +4,9 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { FavoritesSectionProps, RecipeDetails } from "@/types";
 import useLocalStorage from "@/hooks/localstorage";
-import Favorite from "../favorites/favorite";
+import Favorite from "./favorite";
 
-export default function FavoritesSection({
+export default function FavoriteRecipes({
   onViewRecipe,
 }: FavoritesSectionProps) {
   const [favorites, setFavorites] = useLocalStorage<string[]>("favorites", []);
@@ -14,7 +14,7 @@ export default function FavoritesSection({
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchFavoriteRecipes = async () => {
+    const getFavoriteRecipes = async () => {
       setIsLoading(true);
       try {
         const recipes = await Promise.all(
@@ -41,11 +41,11 @@ export default function FavoritesSection({
     };
 
     if (favorites.length > 0) {
-      fetchFavoriteRecipes();
+      getFavoriteRecipes();
     }
   }, [favorites]);
 
-  const handleFavoriteChange = (recipeId: string, isFavorite: boolean) => {
+  const updateFavoriteStatus = (recipeId: string, isFavorite: boolean) => {
     if (isFavorite) {
       setFavorites([...favorites, recipeId]);
     } else {
@@ -91,7 +91,7 @@ export default function FavoritesSection({
               <Favorite
                 recipeId={recipe.idMeal}
                 recipeName={recipe.strMeal}
-                onFavoriteChange={handleFavoriteChange}
+                onFavoriteChange={updateFavoriteStatus}
               />
             </div>
             <div className="p-4">

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { HistoryHeaderProps } from "@/types";
+
 export default function HistoryHeader({
   clearHistory,
   isHistoryEmpty,

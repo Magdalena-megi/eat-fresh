@@ -1,10 +1,8 @@
-"use client";
-
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { RecipeDetailProps } from "@/types";
 import { IngredientsList, InstructionsSection, RecipeImage } from ".";
 
-export default function RecipeDetail({ recipe }: RecipeDetailProps) {
+export default function RecipeDetailPage({ recipe }: RecipeDetailProps) {
   const ingredients = Object.keys(recipe)
     .filter(
       (key) =>
@@ -34,8 +32,8 @@ export default function RecipeDetail({ recipe }: RecipeDetailProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <InstructionsSection instructions={recipe.strInstructions} />
         <IngredientsList ingredients={ingredients} recipe={recipe} />
+        <InstructionsSection instructions={recipe.strInstructions} />
       </CardContent>
     </Card>
   );

@@ -1,4 +1,4 @@
-import { SearchInput } from "@/component/search-tab";
+import { SearchInput } from "@/component/search-recipe";
 
 export default function SearchPage() {
   return (

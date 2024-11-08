@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { Home, Search, Heart, Clock, Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import History from "../history/history";
-import RecipeDetail from "../recipe-details/recipeDetail";
-import RecipeSearch from "../search-tab/searchTab";
-import RandomRecipe from "../random-recipe/randomRecipe";
-import { FavoritesSection, Header } from ".";
+import HistoryPage from "../history/history";
+import RecipeDetailPage from "../recipe-details/recipeDetail";
+import RecipeSearchPage from "../search-recipe/recipeSearchPage";
+import RandomRecipePage from "../random-recipe/randomRecipe";
 import { RecipeDetails } from "@/types";
+import { FavoritesSection } from "../favorites";
+import { Header } from ".";
 
 export default function NavBar() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -34,23 +35,23 @@ export default function NavBar() {
     setCurrentPage("search");
   };
 
-  const renderPageContent = () => {
+  const RecipeNavigator = () => {
     switch (currentPage) {
       case "search":
         return selectedRecipe ? (
-          <RecipeDetail recipe={selectedRecipe} />
+          <RecipeDetailPage recipe={selectedRecipe} />
         ) : (
-          <RecipeSearch
+          <RecipeSearchPage
             onViewRecipe={handleViewRecipe}
             initialSearchTerm={searchTerm}
           />
         );
       case "random":
-        return <RandomRecipe />;
+        return <RandomRecipePage />;
       case "favorites":
         return <FavoritesSection onViewRecipe={handleViewRecipe} />;
       case "history":
-        return <History onSearch={handleSearch} />;
+        return <HistoryPage onSearch={handleSearch} />;
       default:
         return (
           <div className="space-y-12">
@@ -110,9 +111,7 @@ export default function NavBar() {
         ))}
       </nav>
 
-      <main className="max-w-4xl mx-auto px-4 py-12">
-        {renderPageContent()}
-      </main>
+      <main className="max-w-4xl mx-auto px-4 py-12">{RecipeNavigator()}</main>
     </div>
   );
 }

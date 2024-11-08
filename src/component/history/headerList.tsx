@@ -16,10 +16,10 @@ export default function HistoryList({
 
   return (
     <div className="space-y-4">
-      {searchHistory.map((term, index) => (
+      {searchHistory.map((searchTerm, index) => (
         <HistoryItem
-          key={`${term}-${index}`}
-          term={term}
+          key={`${searchTerm}-${index}`}
+          term={searchTerm}
           retrySearch={retrySearch}
           removeFromHistory={removeFromHistory}
         />
