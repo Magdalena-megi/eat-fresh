@@ -138,3 +138,10 @@ export interface RecipeListProps {
   onViewRecipe: (recipe: Recipe) => void;
   handleFavoriteChange: (recipeId: string, isFavorite: boolean) => void;
 }
+
+export interface NavProps {
+  currentPage: string;
+  setCurrentPage: (page: string) => void;
+  setSelectedRecipe: (recipe: null) => void;
+  setSearchTerm: (term: string) => void;
+}

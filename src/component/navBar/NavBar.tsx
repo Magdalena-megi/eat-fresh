@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Home, Search, Heart, Clock, Shuffle } from "lucide-react";
+import { Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HistoryPage from "../history/history";
 import RecipeDetailPage from "../recipe-details/recipeDetail";
@@ -9,21 +9,13 @@ import RecipeSearchPage from "../search-recipe/recipeSearchPage";
 import RandomRecipePage from "../random-recipe/randomRecipe";
 import { RecipeDetails } from "@/types";
 import { FavoritesSection } from "../favorites";
-import { Header } from ".";
-
+import { DesktopNav, Header, MobileNav } from ".";
 export default function NavBar() {
   const [currentPage, setCurrentPage] = useState("home");
   const [selectedRecipe, setSelectedRecipe] = useState<RecipeDetails | null>(
     null
   );
   const [searchTerm, setSearchTerm] = useState("");
-
-  const navItems = [
-    { icon: Home, label: "Home", page: "home" },
-    { icon: Search, label: "Search", page: "search" },
-    { icon: Heart, label: "Favorites", page: "favorites" },
-    { icon: Clock, label: "History", page: "history" },
-  ];
 
   const handleViewRecipe = (recipe: RecipeDetails) => {
     setSelectedRecipe(recipe);
@@ -87,31 +79,21 @@ export default function NavBar() {
   return (
     <div className="min-h-screen bg-gray-100">
       <Header setCurrentPage={setCurrentPage} />
-      <nav className="flex justify-between items-center max-w-4xl mx-auto px-4 py-4">
-        {navItems.map(({ icon: Icon, label, page }) => (
-          <Button
-            key={page}
-            variant="ghost"
-            className={`flex flex-col items-center gap-1 ${
-              currentPage === page
-                ? "text-green-600 bg-white"
-                : "text-gray-600 hover:text-green-600"
-            } px-8 py-2 rounded-lg transition-colors duration-200`}
-            onClick={() => {
-              setCurrentPage(page);
-              if (page === "search") {
-                setSelectedRecipe(null);
-                setSearchTerm("");
-              }
-            }}
-          >
-            <Icon className="h-6 w-6" />
-            <span>{label}</span>
-          </Button>
-        ))}
-      </nav>
-
-      <main className="max-w-4xl mx-auto px-4 py-12">{RecipeNavigator()}</main>
+      <DesktopNav
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        setSelectedRecipe={setSelectedRecipe}
+        setSearchTerm={setSearchTerm}
+      />
+      <main className="max-w-4xl mx-auto px-4 py-12 mb-16 md:mb-12">
+        {RecipeNavigator()}
+      </main>
+      <MobileNav
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        setSelectedRecipe={setSelectedRecipe}
+        setSearchTerm={setSearchTerm}
+      />
     </div>
   );
 }
