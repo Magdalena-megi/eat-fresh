@@ -41,14 +41,6 @@ npm run dev
 
 4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-## Project Structure 📁
-
-- `/app` - Next.js app router pages and layouts
-- `/components` - Reusable UI components
-- `/hooks` - Custom React hooks
-- `/types` - TypeScript type definitions
-- `/public` - Static assets
-
 ## Key Components 🔑
 
 - Navigation Bar - Main navigation with search, favorites, and history
